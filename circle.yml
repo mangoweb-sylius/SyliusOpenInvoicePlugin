@@ -1,0 +1,39 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.1-browsers
+
+    working_directory: ~/src
+
+    steps:
+      - checkout
+
+      - run:
+          command: |
+            sudo apt-get install -y libpng-dev libicu-dev
+
+      - run:
+          name: configure PHP extensions
+          command: |
+            sudo docker-php-ext-configure intl
+
+      - run:
+          name: install PHP extensions
+          command: |
+            sudo docker-php-ext-install exif gd intl
+
+      - run:
+          name: install PHP dependencies
+          command: |
+            composer install
+
+      - run:
+          name: test with PHPStan
+          command: |
+            bin/phpstan analyse --level max --configuration ./phpstan.neon --autoload-file ./vendor/autoload.php ./src
+
+      - run:
+          name: test with Code Style Checker
+          command: |
+            bin/ecs check --config ./easy-coding-standard.neon ./src

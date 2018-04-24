@@ -1,0 +1,19 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder:
+        arguments:
+            - 'MangoSylius\SyliusOpenInvoicePlugin\Payum\OpenInvoiceGatewayFactory'
+        tags:
+            - { name: payum.gateway_factory_builder, factory: open_invoice }
+
+    MangoSylius\SyliusOpenInvoicePlugin\Form\Type\OpenInvoiceConfigurationType:
+        tags:
+            - { name: sylius.gateway_configuration_type, type: open_invoice, label: mango.open_invoice.gateway.label }
+            - { name: form.type }
+
+    MangoSylius\SyliusOpenInvoicePlugin\PaymentResolver\OpenInvoicePaymentMethodResolver:
+        tags:
+            - { name: sylius.payment_method_resolver, type: channel_based, label: sylius.payment_methods_resolver.channel_based, priority: 100 }

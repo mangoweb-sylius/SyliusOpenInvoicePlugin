@@ -1,0 +1,14 @@
+mango:
+    open_invoice:
+        admin:
+            form:
+                channel:
+                    enabled:
+                        label: Enabled
+                    is_open_invoice_only_for_registered:
+                        label: Only for registered users
+                    success_orders_limit:
+                        label: Min. successful orders count
+
+        gateway:
+            label: Open Invoice
